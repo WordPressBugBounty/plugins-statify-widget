@@ -6,7 +6,7 @@ Text Domain: statify-widget
 Author: Finn Dohrn
 Author URI: http://www.bit01.de/
 Plugin URI: http://www.bit01.de/blog/statify-widget/
-Version: 1.3.8
+Version: 1.4.0
 */
 
 require( 'Statify_Post.class.php' );
@@ -45,7 +45,7 @@ class StatifyWidget extends WP_Widget {
 			'interval' => DEFAULT_INTERVAL,
 			'show_visits' => 0,
 			'list_style_type' => "ol",
-			'suffix' => __('%VIEWS% views','statify-widget'),
+			'suffix' => __("%VIEWS% views",'statify-widget'),
 			'post_category' => 0) );
 
     	$title = $instance['title'];
@@ -86,10 +86,10 @@ class StatifyWidget extends WP_Widget {
         </select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('interval'); ?>"><?php _e( 'Last ','statify-widget'); ?>
+			<label for="<?php echo $this->get_field_id('interval'); ?>"><?php _e( 'Amount of days:','statify-widget'); ?>
 				<input id="<?php echo $this->get_field_id('interval'); ?>" name="<?php echo $this->get_field_name('interval'); ?>" type="text" size="3" value="<?php echo esc_attr($interval); ?>" />
-			</label><?php _e( ' days. (If enough stats exists)','statify-widget'); ?>
-			<br /><small><?php _e( '0 days = show all items','statify-widget'); ?></small>
+			</label>
+			<small><?php _e( '0 days = show all items','statify-widget'); ?></small>
 		</p>
         <p>
           <label for="<?php echo $this->get_field_id('amount'); ?>"><?php _e( 'Amounts:','statify-widget'); ?>

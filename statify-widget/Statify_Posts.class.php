@@ -23,7 +23,7 @@ class Statify_Posts {
 			$clear_url = str_replace($wpurl['host'],"",$entry['url']);
 			
 			// Add "frontpage" view counter, if post_type page/postpage and blog view is frontpage
-			if ($clear_url == '/' && ($post_type == 'page' || $post_type == 'postpage') && 'page' != get_option('show_on_front')) {
+			if ($clear_url == '/' && 'page' != get_option('show_on_front')) {
 				if (!isset($posts[0])) $posts[0] = 0;
 				$posts[0] += $entry['count'];
 				continue;
@@ -31,13 +31,16 @@ class Statify_Posts {
 			
 			// Try to get ID from Statify Count URL
 			$id = url_to_postid(home_url( $clear_url ));
+			if ($id == 0 && 'page' == get_option('show_on_front')) {
+				$id = get_option( 'page_for_posts' );
+			}
 			
 			// Get page by ID
 			$page = get_page($id);
 			
 			// Find statistics for published "post&page" entries
 			if ( (isset($page->post_type) && ($page->post_type == $post_type || $post_type == 'postpage')) && (isset($page->post_status) && $page->post_status == 'publish') ) {
-                
+                			
 				if (!empty($page->ID)) {
 					// When category is select, then ignore other posts!
 					if ($post_type == 'post' && $post_category > 0) {
@@ -49,7 +52,6 @@ class Statify_Posts {
 					if (!isset($posts[$page->ID])) $posts[$page->ID] = 0;
 					$posts[$page->ID] += $entry['count'];
 				}
-				
 			}
 			if (sizeof($posts) >= $amount) break;
 		}
@@ -67,17 +69,8 @@ class Statify_Posts {
 		$wp_posts = array();
 		
 		foreach ($posts as $post_id=>$views) {
-			$wp_posts[] = new Statify_Post(get_page($post_id), $views);
-			
-			// Manipulate Frontpage Post (ID==0) to fix values
-			if ($post_id == 0) {
-				$wp_posts[$post_id]->post_title = __('Frontpage','statify-widget');
-				$wp_posts[$post_id]->post_permalink = get_home_url();
-			}
-			
+			$wp_posts[$post_id] = new Statify_Post($post_id, $views);
 		}
-		
-
 		
 		return $wp_posts;
 	}
@@ -115,7 +108,7 @@ class Statify_Posts {
 		}
 
 		$targets = self::get_all_targets(intval($days));
-		$count = -1;
+		$count = 0;
 
 		foreach ($targets as $entry) {
 			$clear_url = str_replace(get_bloginfo('wpurl'),"",$entry['url']);
@@ -139,7 +132,7 @@ class Statify_Posts {
 	public static function statify_count_sum($days) {
 		$wpurl = parse_url(get_bloginfo('wpurl'));
 		$targets = self::get_all_targets(intval($days));
-		$count = -1;
+		$count = 0;
 
 		foreach ($targets as $entry) {
 			$count += $entry['count'];
@@ -212,16 +205,18 @@ class Statify_Posts {
 		if ($data = get_transient('statify_targets_'.$interval)) {
 			return $data;
 		}
-
+		
 		if ($interval > 0) {
-			$date = date("Y-m-d", strtotime('-' . $interval . ' days'));
+			$current_time = current_time('timestamp');
+			$interval_time = $current_time - ($interval * DAY_IN_SECONDS);
+			$date = date("Y-m-d", $interval_time);
 		}
 
 		global $wpdb;
 
 		if ($interval > 0) {
 			$data = $wpdb->get_results(
-				"SELECT COUNT(`target`) as `count`, `target` as `url` FROM `$wpdb->statify` WHERE `created` >= '$date' GROUP BY `target` ORDER BY `count` DESC",
+				"SELECT COUNT(`target`) as `count`, `target` as `url` FROM `$wpdb->statify` WHERE `created` > '$date' GROUP BY `target` ORDER BY `count` DESC",
 				ARRAY_A
 			);
 		} else {
