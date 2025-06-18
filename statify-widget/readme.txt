@@ -195,6 +195,14 @@ Properties
 
 == Changelog ==
 
+= 1.4.4 =
+
+* Add again filter for "frontpage" fallback if 'posts' in widget.
+
+= 1.4.3 =
+
+* Fix bug that crashes the whole plugin.
+
 = 1.4.2 =
 
 * Fix small bug, that displayed "frontpage" (if blog view is activated) in 'posts' widgets.
