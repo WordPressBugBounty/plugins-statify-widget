@@ -1,6 +1,6 @@
 === Statify Widget ===
 Contributors: 		bitnulleins
-Tags: 			    statify, widget, popular posts, privacy, stats
+Tags: 			    widget, popular posts, privacy, statistics, analytics
 Requires at least: 	4.6
 Tested up to: 		6.8.1
 Requires PHP: 		5.2.4
@@ -83,7 +83,7 @@ Statify has not added statistics yet. Wait some days to collect some statistics 
 
 Yes! Since 1.4.1 you can add the following filter to change the **default 4 minute cache** (60 * 4) to another value in seconds:
 
-`add_filter( 'statify_targets_cache_expiration', fn() => 60*4 );`
+`add_filter( 'statify_targets_cache_expiry', fn() => 60*4 );`
 
 If you do not set a numerical value greater than zero (>0), the standard cache expiry time is automatically used.
 
@@ -195,6 +195,10 @@ Properties
 
 == Changelog ==
 
+= 1.4.5 =
+
+* Conversion of the interval calculation from PHP UTC to the selected WordPress time zone
+
 = 1.4.4 =
 
 * Add again filter for "frontpage" fallback if 'posts' in widget.
@@ -222,7 +226,6 @@ Properties
 * Correction of the totals of views from Statify data (if a page is selected as the start page, the views of the start page and the selected page are combined). The “Blog” page is now recorded independently
 * Support for up to PHP 8.4 enabled
 * Text display if no posts exist yet included in translation
-* Conversion of the interval calculation from PHP UTC to the selected WordPress time zone
 * Correction of the total sum in the shortcode (was always one too few)
 * Change of the relation in the SQL statement from “greater than or equal to” to “really greater”
 
