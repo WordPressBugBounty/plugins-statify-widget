@@ -195,6 +195,12 @@ Properties
 
 == Changelog ==
 
+= 1.4.6 =
+
+* Accept only filter minute values >0 (not smaller than zero)
+* Reactivate category selection for "post" type in widget (without extra jQuery)
+* Reduce number of queries. That boost performance for websites with many pages.
+
 = 1.4.5 =
 
 * Conversion of the interval calculation from PHP UTC to the selected WordPress time zone
