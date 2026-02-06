@@ -2,7 +2,7 @@
 Contributors: 		bitnulleins
 Tags: 			    widget, popular posts, privacy, statistics, analytics
 Requires at least: 	4.6
-Tested up to: 		6.8.1
+Tested up to: 		6.9
 Requires PHP: 		5.2.4
 Stable tag: 		trunk
 License: 		    GPLv2 or later
@@ -194,6 +194,20 @@ Properties
 
 
 == Changelog ==
+
+= 1.4.9 =
+
+* Fix widget update function for title update
+
+= 1.4.8 = 
+
+* Fix missing translation output, if required plugin "Statify" is missing.
+
+= 1.4.7 =
+
+* Add missing js script
+* Remove possible XSS vulnerabilities ([More information](https://patchstack.com/database/wordpress/plugin/statify-widget/vulnerability/wordpress-statify-widget-plugin-1-4-6-cross-site-scripting-xss-vulnerability))
+* Fix print statement for missing posts in widget
 
 = 1.4.6 =
 
